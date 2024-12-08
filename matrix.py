@@ -15,6 +15,19 @@ class SparseMatrix():
         self.n = n
         self.m = m
 
+    def __call__(self):
+        return self.sparse
+
+class Row():
+    def __init__(self, values, col_indices):
+        self.values, self.col_indices = values, col_indices
+
+    def __getitem__(self, idx):
+        try:
+            return self.values[self.col_indices.index(idx)]
+        except:
+            return 0
+
 
 class Matrix:
     def __init__(self, matrix: DenseMatrix | SparseMatrix):
@@ -46,8 +59,30 @@ class Matrix:
                 matrix[i][col_indices[j]] = values[j]
         return DenseMatrix(matrix)
 
+    def n(self):
+        return self.matrix.n
+
+    def m(self):
+        return self.matrix.m
+
+    def trace(self):
+        result = 0
+        values, col_indices, row_ptr = self.matrix()
+        n, m = self.n(), self.m()
+        assert n == m
+        for i in range(n):
+            for j in range(row_ptr[i], row_ptr[i + 1]):
+                if i == col_indices[j]:
+                    result += values[j]
+        return result
+
     def __str__(self):
         return str(self.matrix.sparse)
 
     def __repr__(self):
         return f'Matrix(SparseMatrix({str(self.matrix.sparse)}, {self.matrix.n}, {self.matrix.m}))'
+
+    def __getitem__(self, idx) -> Row:
+        start_j, finish_j = self.matrix()[2][idx], self.matrix()[2][idx + 1]
+        values, col_indices = self.matrix()[0][start_j:finish_j], self.matrix()[1][start_j:finish_j]
+        return Row(values, col_indices)
