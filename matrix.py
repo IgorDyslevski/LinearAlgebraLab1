@@ -52,7 +52,7 @@ class DenseMatrix(ABCMatrix):
             result += self.matrix()[i][i]
         return result
 
-    def __add__(self):
+    def __add__(self, val):
         assert self.n() == val.n() and self.m() == self.m(), "Размеры матриц должны совпадать"
         matrix = [[0] * self.m() for _ in range(self.n())]
         for i in range(self.n()):
@@ -80,7 +80,7 @@ class DenseMatrix(ABCMatrix):
 
     def det(self):
         if self.n() == 1:
-            return matrix[0][0]
+            return self[0][0]
         if self.n() == 2:
             return self[0][0] * self[1][1] - self[0][1] * self[1][0]
         det = 0
@@ -284,3 +284,10 @@ class MatrixUtils:
             for j in range(row_ptr[i], row_ptr[i + 1]):
                 matrix[i][col_indices[j]] = values[j]
         return DenseMatrix(matrix)
+
+    @staticmethod
+    def read2dense() -> DenseMatrix:
+        n, m = map(int, input().split())
+        matrix = [list(map(int, input().split())) for _ in range(n)]
+        return DenseMatrix(matrix)
+
