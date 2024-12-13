@@ -78,16 +78,17 @@ class DenseMatrix(ABCMatrix):
             
             return DenseMatrix(matrix)
 
-    def det(self):
-        if self.n() == 1:
+    def det(self, matrix=None):
+        if matrix is None:
+            matrix = self
+        if matrix.n() == 1:
             return self[0][0]
-        if self.n() == 2:
-            return self[0][0] * self[1][1] - self[0][1] * self[1][0]
+        if matrix.n() == 2:
+            return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0]
         det = 0
-        for col in range(self.n()):
-            minor = [[self[i][j] for j in range(self.n()) if j != col] for i in range(1, self.n())]
-            det += ((-1) ** col) * self[0][col] * det(minor)
-    
+        for col in range(matrix.n()):
+            minor = [[matrix[i][j] for j in range(matrix.n()) if j != col] for i in range(1, matrix.n())]
+            det += ((-1) ** col) * self[0][col] * self.det(DenseMatrix(minor))
         return det
 
     def det_gauss(self):
@@ -97,6 +98,8 @@ class DenseMatrix(ABCMatrix):
         for i in range(self.n()):
             det *= matrix[i][i] 
             for j in range(i + 1, self.m()):
+                if matrix[i][i] == 0:
+                    return 0
                 factor = matrix[j][i] / matrix[i][i]
                 for z in range(self.m()):
                     matrix[j][z] -= factor * matrix[i][z]
@@ -272,7 +275,7 @@ class MatrixUtils:
                     values.append(value)
                     col_indices.append(j)
             row_ptr.append(len(values))
-        return SparseMatrix([values, col_indices, row_ptr], dense.n(), dense.m())
+        return SparseMatrix((values, col_indices, row_ptr), dense.n(), dense.m())
 
     @staticmethod
     def sparse2dense(sparse: SparseMatrix) -> DenseMatrix:
@@ -286,8 +289,10 @@ class MatrixUtils:
         return DenseMatrix(matrix)
 
     @staticmethod
-    def read2dense() -> DenseMatrix:
+    def read2dense(print_before_input1, print_before_input2) -> DenseMatrix:
+        print(print_before_input1)
         n, m = map(int, input().split())
+        print(print_before_input2)
         matrix = [list(map(int, input().split())) for _ in range(n)]
         return DenseMatrix(matrix)
 
