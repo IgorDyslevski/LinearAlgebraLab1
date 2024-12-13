@@ -12,10 +12,15 @@ def det(n, m, matrix):
     return det
 
 def inv_exist(n, m, matrix):
+    if n != m:
+        print('нет')
+        return False
     if det(n, m, matrix) != 0:
         print('да')
+        return True
     else:
         print('нет')
+        return False
 
 
 if __name__ == '__main__':
