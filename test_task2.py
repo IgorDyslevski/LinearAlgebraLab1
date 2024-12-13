@@ -21,7 +21,9 @@ def test_matrix_sum():
               [1, 0, 0, 1, 12, 0, 1],
               [0, 0, 0, 0, 0, 8, 0],
               [2, 2, 0, 0, 3, 0, 8]]
-    assert matrix_sum(n1, m1, matrix1, n2, m2, matrix2) == ([18, 6, 2, 2, 22, 4, 2, 4, 2, 20, 4, 4, 2, 4, 18, 2, 2, 2, 24, 2, 16, 4, 4, 6, 16],
+    sparse1 = MatrixUtils.dense2sparse(DenseMatrix(matrix1))
+    sparse2 = MatrixUtils.dense2sparse(DenseMatrix(matrix2))
+    assert matrix_sum(sparse1, sparse2) == ([18, 6, 2, 2, 22, 4, 2, 4, 2, 20, 4, 4, 2, 4, 18, 2, 2, 2, 24, 2, 16, 4, 4, 6, 16],
                                              [0, 3, 4, 6, 1, 2, 3, 6, 1, 2, 3, 0, 1, 2, 3, 4, 0, 3, 4, 6, 5, 0, 1, 4, 6],
                                              [0, 4, 8, 11, 16, 20, 21, 25])
 
@@ -35,8 +37,9 @@ def test_matrix_scalar_mul():
               [0, 0, 0, 0, 0, 8, 0],
               [2, 2, 0, 0, 3, 0, 8]]
     scalar = 8
+    sparse = MatrixUtils.dense2sparse(DenseMatrix(matrix))
 
-    assert matrix_scalar_mul(n, m, matrix, scalar) == ([72, 24, 8, 8, 88, 16, 8, 16, 8, 80, 16, 16, 8, 16, 72, 8, 8, 8, 96, 8, 64, 16, 16, 24, 64],
+    assert matrix_scalar_mul(sparse, scalar) == ([72, 24, 8, 8, 88, 16, 8, 16, 8, 80, 16, 16, 8, 16, 72, 8, 8, 8, 96, 8, 64, 16, 16, 24, 64],
                                              [0, 3, 4, 6, 1, 2, 3, 6, 1, 2, 3, 0, 1, 2, 3, 4, 0, 3, 4, 6, 5, 0, 1, 4, 6],
                                              [0, 4, 8, 11, 16, 20, 21, 25])
 
@@ -58,6 +61,8 @@ def test_matrix_matrix_mul():
               [1, 0, 0, 1, 12, 0, 1],
               [0, 0, 0, 0, 0, 8, 0],
               [2, 2, 0, 0, 3, 0, 8]]
-    assert matrix_matrix_mul(n1, m1, matrix1, n2, m2, matrix2) == ([90, 5, 6, 55, 27, 18, 6, 128, 44, 24, 7, 38, 4, 23, 106, 39, 2, 2, 37, 22, 40, 93, 23, 5, 25, 3, 2, 24, 149, 21, 64, 37, 38, 4, 11, 62, 73],
+    sparse1 = MatrixUtils.dense2sparse(DenseMatrix(matrix1))
+    sparse2 = MatrixUtils.dense2sparse(DenseMatrix(matrix2))
+    assert matrix_matrix_mul(sparse1, sparse2) == ([90, 5, 6, 55, 27, 18, 6, 128, 44, 24, 7, 38, 4, 23, 106, 39, 2, 2, 37, 22, 40, 93, 23, 5, 25, 3, 2, 24, 149, 21, 64, 37, 38, 4, 11, 62, 73],
                                                                     [0, 1, 2, 3, 4, 6, 0, 1, 2, 3, 4, 6, 0, 1, 2, 3, 4, 6, 0, 1, 2, 3, 4, 6, 0, 1, 2, 3, 4, 6, 5, 0, 1, 2, 3, 4, 6],
                                                                       [0, 6, 12, 18, 24, 30, 31, 37])
