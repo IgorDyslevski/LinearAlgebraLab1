@@ -16,6 +16,12 @@ class ABCMatrix:
     def m(self):
         return self._m
 
+    def trace(self):
+        pass
+
+    def det(self):
+        pass
+
     def __getitem__(self, idx):
         pass
 
