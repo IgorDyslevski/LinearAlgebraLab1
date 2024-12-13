@@ -53,7 +53,7 @@ class DenseMatrix(ABCMatrix):
         return result
 
     def __add__(self, val):
-        assert self.n() == val.n() and self.m() == self.m(), "Размеры матриц должны совпадать"
+        assert self.n() == val.n() and self.m() == val.m(), "Размеры матриц должны совпадать"
         matrix = [[0] * self.m() for _ in range(self.n())]
         for i in range(self.n()):
             for j in range(self.m()):
