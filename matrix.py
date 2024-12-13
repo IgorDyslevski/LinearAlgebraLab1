@@ -96,13 +96,22 @@ class DenseMatrix(ABCMatrix):
         det = 1
         matrix = deepcopy(self.matrix())
         for i in range(self.n()):
-            det *= matrix[i][i] 
-            for j in range(i + 1, self.m()):
+            max_row = i
+            for k in range(i + 1, self.n()):
+                if abs(matrix[k][i]) > abs(matrix[max_row][i]):
+                    max_row = k
+            if max_row != i:
+                matrix[i], matrix[max_row] = matrix[max_row], matrix[i]
+                det *= -1
+            for j in range(i + 1, self.n()):
                 if matrix[i][i] == 0:
                     return 0
                 factor = matrix[j][i] / matrix[i][i]
-                for z in range(self.m()):
+                for z in range(i, self.n()):
                     matrix[j][z] -= factor * matrix[i][z]
+       
+        for i in range(self.n()):
+            det *= matrix[i][i]
         return det
         
 
