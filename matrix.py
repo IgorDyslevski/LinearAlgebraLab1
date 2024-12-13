@@ -1,3 +1,6 @@
+from deepcopy import copy
+
+
 class ABCMatrix:
     def __init__(self, matrix, n, m):
         self._matrix = matrix
@@ -87,6 +90,17 @@ class DenseMatrix(ABCMatrix):
     
         return det
 
+    def det_gauss(self):
+        assert self.n() == self.m()
+        det = 1
+        matrix = self.matrix().copy()
+        for i in range(self.n()):
+            det *= matrix[i][i] 
+            for j in range(i + 1, self.m()):
+                factor = matrix[j][i] / matrix[i][i]
+                for z in range(self.m()):
+                    matrix[j][z] -= factor * matrix[i][z]
+        return det
         
 
 class Row():
