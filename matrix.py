@@ -1,4 +1,4 @@
-from deepcopy import copy
+from copy import deepcopy
 
 
 class ABCMatrix:
@@ -93,7 +93,7 @@ class DenseMatrix(ABCMatrix):
     def det_gauss(self):
         assert self.n() == self.m()
         det = 1
-        matrix = self.matrix().copy()
+        matrix = deepcopy(self.matrix())
         for i in range(self.n()):
             det *= matrix[i][i] 
             for j in range(i + 1, self.m()):
@@ -259,7 +259,8 @@ class SparseMatrix(ABCMatrix):
 
 
 class MatrixUtils:
-    def dense2sparse(self, dense: DenseMatrix) -> SparseMatrix:
+    @staticmethod
+    def dense2sparse(dense: DenseMatrix) -> SparseMatrix:
         assert dense.n() > 0 and dense.m() > 0
         values = []
         col_indices = []
@@ -273,7 +274,8 @@ class MatrixUtils:
             row_ptr.append(len(values))
         return SparseMatrix([values, col_indices, row_ptr], dense.n(), dense.m())
 
-    def sparse2dense(self, sparse: SparseMatrix) -> DenseMatrix:
+    @staticmethod
+    def sparse2dense(sparse: SparseMatrix) -> DenseMatrix:
         values, col_indices, row_ptr = sparse.matrix()
         rows = sparse.n()
         cols = sparse.m()
